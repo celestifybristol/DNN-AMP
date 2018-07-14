@@ -2,7 +2,7 @@
 	<h3>License</h3>
 	<p class="Owner">
 		Risdall Marketing Group  <a href=http://www.risdall.com/>http://www.risdall.com/</a></br>
-		Copyright (c) 2017</br>	
+		Copyright (c) 2018</br>	
 		by Risdall Marketing Group</br>
 	</p>
     <p>

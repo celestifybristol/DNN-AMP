@@ -10,10 +10,13 @@
 ' 
 */
 
+using System;
 using System.Collections.Generic;
 //using System.Xml;
 using DotNetNuke.Entities.Modules;
+using DotNetNuke.Services.Scheduling;
 using DotNetNuke.Services.Search;
+using DotNetNuke.Services.Social.Notifications;
 
 namespace Risdall.Modules.DNN_AMP.Components
 {
@@ -37,101 +40,50 @@ namespace Risdall.Modules.DNN_AMP.Components
     /// -----------------------------------------------------------------------------
 
     //uncomment the interfaces to add the support.
-    public class FeatureController //: IPortable, ISearchable, IUpgradeable
+    public class FeatureController : IUpgradeable //: IPortable, ISearchable, IUpgradeable
     {
-
-
+        
         #region Optional Interfaces
 
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// ExportModule implements the IPortable ExportModule Interface
-        /// </summary>
-        /// <param name="ModuleID">The Id of the module to be exported</param>
-        /// -----------------------------------------------------------------------------
-        //public string ExportModule(int ModuleID)
-        //{
-        //string strXML = "";
+        public string UpgradeModule(string version)
+        {
+            if (version == "00.00.02" || version == "0.0.2")
+            {
+                // add in scheduled task
+                SetScheduledTask("Risdall.Modules.DNN_AMP.ScheduledTasks.BuildAmps,DotNetNuke.DNN_AMP");
+            }
 
-        //List<DNN_AMPInfo> colDNN_AMPs = GetDNN_AMPs(ModuleID);
-        //if (colDNN_AMPs.Count != 0)
-        //{
-        //    strXML += "<DNN_AMPs>";
-
-        //    foreach (DNN_AMPInfo objDNN_AMP in colDNN_AMPs)
-        //    {
-        //        strXML += "<DNN_AMP>";
-        //        strXML += "<content>" + DotNetNuke.Common.Utilities.XmlUtils.XMLEncode(objDNN_AMP.Content) + "</content>";
-        //        strXML += "</DNN_AMP>";
-        //    }
-        //    strXML += "</DNN_AMPs>";
-        //}
-
-        //return strXML;
-
-        //	throw new System.NotImplementedException("The method or operation is not implemented.");
-        //}
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// ImportModule implements the IPortable ImportModule Interface
-        /// </summary>
-        /// <param name="ModuleID">The Id of the module to be imported</param>
-        /// <param name="Content">The content to be imported</param>
-        /// <param name="Version">The version of the module to be imported</param>
-        /// <param name="UserId">The Id of the user performing the import</param>
-        /// -----------------------------------------------------------------------------
-        //public void ImportModule(int ModuleID, string Content, string Version, int UserID)
-        //{
-        //XmlNode xmlDNN_AMPs = DotNetNuke.Common.Globals.GetContent(Content, "DNN_AMPs");
-        //foreach (XmlNode xmlDNN_AMP in xmlDNN_AMPs.SelectNodes("DNN_AMP"))
-        //{
-        //    DNN_AMPInfo objDNN_AMP = new DNN_AMPInfo();
-        //    objDNN_AMP.ModuleId = ModuleID;
-        //    objDNN_AMP.Content = xmlDNN_AMP.SelectSingleNode("content").InnerText;
-        //    objDNN_AMP.CreatedByUser = UserID;
-        //    AddDNN_AMP(objDNN_AMP);
-        //}
-
-        //	throw new System.NotImplementedException("The method or operation is not implemented.");
-        //}
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// GetSearchItems implements the ISearchable Interface
-        /// </summary>
-        /// <param name="ModInfo">The ModuleInfo for the module to be Indexed</param>
-        /// -----------------------------------------------------------------------------
-        //public DotNetNuke.Services.Search.SearchItemInfoCollection GetSearchItems(DotNetNuke.Entities.Modules.ModuleInfo ModInfo)
-        //{
-        //SearchItemInfoCollection SearchItemCollection = new SearchItemInfoCollection();
-
-        //List<DNN_AMPInfo> colDNN_AMPs = GetDNN_AMPs(ModInfo.ModuleID);
-
-        //foreach (DNN_AMPInfo objDNN_AMP in colDNN_AMPs)
-        //{
-        //    SearchItemInfo SearchItem = new SearchItemInfo(ModInfo.ModuleTitle, objDNN_AMP.Content, objDNN_AMP.CreatedByUser, objDNN_AMP.CreatedDate, ModInfo.ModuleID, objDNN_AMP.ItemId.ToString(), objDNN_AMP.Content, "ItemId=" + objDNN_AMP.ItemId.ToString());
-        //    SearchItemCollection.Add(SearchItem);
-        //}
-
-        //return SearchItemCollection;
-
-        //	throw new System.NotImplementedException("The method or operation is not implemented.");
-        //}
-
-        /// -----------------------------------------------------------------------------
-        /// <summary>
-        /// UpgradeModule implements the IUpgradeable Interface
-        /// </summary>
-        /// <param name="Version">The current version of the module</param>
-        /// -----------------------------------------------------------------------------
-        //public string UpgradeModule(string Version)
-        //{
-        //	throw new System.NotImplementedException("The method or operation is not implemented.");
-        //}
+            return version;
+        }
 
         #endregion
 
-    }
+        #region Helpers
+        private void SetScheduledTask(string typefullname)
+        {
+            var t = SchedulingProvider.Instance().GetSchedule(typefullname, string.Empty);
 
+            if (t != null)
+                return;
+            
+            var i = new ScheduleItem();
+            i.CatchUpEnabled = false;
+            i.Enabled = true;
+            i.NextStart = DateTime.Now.AddMinutes(1);
+            i.RetainHistoryNum = 50;
+            i.TypeFullName = typefullname;
+            i.ScheduleSource = ScheduleSource.NOT_SET;
+
+            // set custom settings
+            i.FriendlyName = "AMP Runner";
+            i.TimeLapse = 1;
+            i.TimeLapseMeasurement = "d";
+            i.RetryTimeLapse = 1;
+            i.RetryTimeLapseMeasurement = "h";
+
+            SchedulingProvider.Instance().AddSchedule(i);
+        }
+        #endregion
+
+    }
 }

@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="DNN_AMP" type="Module" version="00.00.01">
+    <package name="DNN_AMP" type="Module" version="00.00.02">
       <friendlyName>DNN_AMP</friendlyName>
       <description>Risdall Marketing Group DNN_AMP module</description>
       <iconFile>/Images/icon_extensions_32px.png</iconFile>
@@ -14,7 +14,7 @@
       <releaseNotes src="ReleaseNotes.txt"></releaseNotes>
       <azureCompatible>true</azureCompatible>
       <dependencies>
-        <dependency type="CoreVersion">07.00.02</dependency>
+        <dependency type="CoreVersion">08.00.03</dependency>
       </dependencies>
       
       <components>
@@ -30,11 +30,9 @@
           <desktopModule>
             <moduleName>DNN_AMP</moduleName>
             <foldername>DNN_AMP</foldername>
-            <businessControllerClass>Risdall.Modules.DNN_AMP.Components.FeatureController, DNN_AMP</businessControllerClass>
+            <businessControllerClass>Risdall.Modules.DNN_AMP.Components.FeatureController, DotNetNuke.DNN_AMP</businessControllerClass>
             <supportedFeatures>
-              <supportedFeature>IPortable</supportedFeature>
-              <supportedFeature>ISearchable</supportedFeature>
-              <supportedFeature>IUpgradeable</supportedFeature>
+              <supportedFeature type="Upgradeable" />
             </supportedFeatures>
             <moduleDefinitions>
               <moduleDefinition>
@@ -70,7 +68,7 @@
             <processorType>DotNetNuke.Entities.Modules.EventMessageProcessor, DotNetNuke</processorType>
             <processorCommand>UpgradeModule</processorCommand>
             <attributes>
-              <businessControllerClass>Risdall.Modules.DNN_AMP.Components.FeatureController, DNN_AMP</businessControllerClass>
+              <businessControllerClass>Risdall.Modules.DNN_AMP.Components.FeatureController, DotNetNuke.DNN_AMP</businessControllerClass>
               <desktopModuleID>[DESKTOPMODULEID]</desktopModuleID>
               <upgradeVersionsList>00.00.01</upgradeVersionsList>
             </attributes>
@@ -79,7 +77,7 @@
         <component type="Assembly">
           <assemblies>
             <assembly>
-              <name>DNN_AMP.dll</name>
+              <name>DotNetNuke.DNN_AMP.dll</name>
               <path>bin</path>
             </assembly>
             <assembly>
