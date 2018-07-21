@@ -60,6 +60,9 @@
     <Reference Include="System.Data" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml" />
@@ -72,7 +75,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Components\AMPHelpers.cs" />
+    <Compile Include="Components\Extensions.cs" />
     <Compile Include="Components\FeatureController.cs" />
+    <Compile Include="Components\ImageUtilities.cs" />
     <Compile Include="DNN_AMPModuleBase.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -87,6 +92,13 @@
     </Compile>
     <Compile Include="Settings.ascx.designer.cs">
       <DependentUpon>Settings.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="SkinObjects\AmpMeta.ascx.cs">
+      <DependentUpon>AmpMeta.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SkinObjects\AmpMeta.ascx.designer.cs">
+      <DependentUpon>AmpMeta.ascx</DependentUpon>
     </Compile>
     <Compile Include="View.ascx.cs">
       <DependentUpon>View.ascx</DependentUpon>
@@ -103,6 +115,7 @@
     <Content Include="module.css" />
     <Content Include="ReleaseNotes.txt" />
     <Content Include="Settings.ascx" />
+    <Content Include="SkinObjects\AmpMeta.ascx" />
     <Content Include="templates\start.html" />
     <Content Include="View.ascx" />
   </ItemGroup>

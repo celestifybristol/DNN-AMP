@@ -70,7 +70,7 @@
             <attributes>
               <businessControllerClass>Risdall.Modules.DNN_AMP.Components.FeatureController, DotNetNuke.DNN_AMP</businessControllerClass>
               <desktopModuleID>[DESKTOPMODULEID]</desktopModuleID>
-              <upgradeVersionsList>00.00.01</upgradeVersionsList>
+              <upgradeVersionsList>00.00.02</upgradeVersionsList>
             </attributes>
           </eventMessage>
         </component>
